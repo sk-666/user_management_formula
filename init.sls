@@ -2,6 +2,9 @@ create_grain:
   grains.present:
     - name: salt_managed_users
     - value: []
+
+# TODO: Refresh grains after creation, it causes error during first run.
+# Possible workaround - move everyting else in a separate sls
 {% for user, data in pillar.get('users', {}).items() %}
 user_{{ user }}:
   user.present:
