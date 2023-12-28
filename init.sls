@@ -22,3 +22,9 @@ grains_append_user_{{ user }}:
     - name: salt_managed_users
     - value: {{ user }}
 {% endfor %}
+{% from 'user_management_formula/map_deleted_users.jinja' import users_delete with context %}
+{% for user in users_delete %}
+delete_user_{{ user }}:
+  user.absent:
+    - name: {{ user }}
+{% endfor %}

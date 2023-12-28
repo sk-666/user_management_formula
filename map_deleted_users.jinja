@@ -1,0 +1,4 @@
+# Find deleted users
+{% set grains_users = grains['salt_managed_users'] %}
+{% set pillar_users = pillar.get('users').keys() | list %}
+{% set users_delete = (grains_users | difference(pillar_users)) %}
