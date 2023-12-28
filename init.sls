@@ -1,3 +1,6 @@
+grains.exists:
+  - name: salt_managed_users
+
 {% for user, data in pillar.get('users', {}).items() %}
 user_{{ user }}:
   user.present:
