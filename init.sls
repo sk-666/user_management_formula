@@ -28,5 +28,5 @@ remove_{{ user }}_from_grains:
     - name: salt_managed_users
     - value: {{ user }}
     - require: 
-      - user.{{ user }}
+      - user: {{ user }}
 {% endfor %}
