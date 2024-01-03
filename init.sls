@@ -17,6 +17,16 @@ grains_append_user_{{ user }}:
   grains.list_present:
     - name: salt_managed_users
     - value: {{ user }}
+
+{% if data.ssh_auth is defined %}
+user_{{ user }}_ssh_auth:
+  ssh_auth.manage:
+    - user: {{ user }}
+    - enc: {{ data.ssh_auth.enc | default ('ed25519') }}
+    - ssh_keys: {{ salt['pillar.get']('users:' ~ user ~ ':ssh_auth:keys', []) }}
+    - require:
+      - user: {{ user }}
+{% endif %}
 {% endfor %}
 
 {% from 'user_management_formula/map_deleted_users.jinja' import users_delete with context %}
