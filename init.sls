@@ -22,4 +22,11 @@ grains_append_user_{{ user }}:
 delete_user_{{ user }}:
   user.absent:
     - name: {{ user }}
+
+remove_{{ user }}_from_grains:
+  grains.list_absent:
+    - name: salt_managed_users
+    - value: {{ user }}
+    - require: 
+      - user.{{ user }}
 {% endfor %}
