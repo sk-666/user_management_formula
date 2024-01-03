@@ -23,7 +23,7 @@ user_{{ user }}_ssh_auth:
   ssh_auth.manage:
     - user: {{ user }}
     - enc: {{ data.ssh_auth.enc | default ('ed25519') }}
-    - ssh_keys: {{ data.ssh_auth.keys }}
+    - ssh_keys: {{ salt['pillar.get']('users:' ~ user ~ ':ssh_auth:keys', []) }}
     - require:
       - user: {{ user }}
 {% endif %}
