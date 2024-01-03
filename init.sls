@@ -5,9 +5,9 @@ user_{{ user }}:
     - name: {{ user }}
     - usergroup: {{ data.usergroup }}
     - groups: {{ data.groups }}
-    - home: {{ data.home }}
+    - home: {{ data.home | default(None)}}
     - shell: {{ data.shell }}
-    - system: {{ data.system }}
+    - system: {{ data.system | default(False)}}
     - fullname: {{ data.fullname }}
     - expire: {{ data.expire }}
 
