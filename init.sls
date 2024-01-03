@@ -3,15 +3,15 @@
 user_{{ user }}:
   user.present:
     - name: {{ user }}
-    - uid: {{ data.uid | default(None) }}
-    - gid: {{ data.gid | default(None) }}
+    - uid: {{ data.uid | default('') }}
+    - gid: {{ data.gid | default('') }}
     - usergroup: {{ data.usergroup | default(True) }}
-    - groups: {{ data.groups | default (None) }}
-    - home: {{ data.home | default(None) }}
+    - groups: {{ data.groups | default ([]) }}
+    - home: {{ data.home | default('') }}
     - shell: {{ data.shell | default('/bin/sh') }}
     - system: {{ data.system | default(False) }}
-    - fullname: {{ data.fullname | default(None) }}
-    - expire: {{ data.expire | default(None) }}
+    - fullname: {{ data.fullname | default(user) }}
+    - expire: {{ data.expire | default(-1) }}
 
 grains_append_user_{{ user }}:
   grains.list_present:
