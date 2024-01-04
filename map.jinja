@@ -1,18 +1,18 @@
 {% set users = {} %}
-{% default_user = {
-    uid: '',
-    gid: '',
-    usergroup: True,
-    groups: [],
-    home: '',
-    shell: '/bin/sh',
-    system: False,
-    fullname: '',
-    expire: -1,
+{% set default_user_data = {
+    'uid': '',
+    'gid': '',
+    'usergroup': True,
+    'groups': [],
+    'home': '',
+    'shell': '/bin/sh',
+    'system': False,
+    'fullname': '',
+    'expire': -1,
   }
 %}
-
-{% for user, data in pillar.get('users', {}).items() %}
-  {% do users[user]= {} %}
-  {% do users.user.update(salt["defaults.merge"](data, default_user)) %}
+{% set pillar_users = pillar.get('users')%}
+{% for user, data in pillar_users.items() %}
+  {% do users.update({user:{} }) %}
+  {% do users[user].update(salt["defaults.merge"](data, default_user_data, in_place=False)) %}
 {% endfor %}
