@@ -1,5 +1,6 @@
+{% from 'user_management_formula/map.jinja' import users with context %}
 
-{% for user, data in pillar.get('users', {}).items() %}
+{% for user, data in users %}
 user_{{ user }}:
   user.present:
     - name: {{ user }}
