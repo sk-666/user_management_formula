@@ -20,15 +20,15 @@ grains_append_user_{{ user }}:
     - name: salt_managed_users
     - value: {{ user }}
 
-{% if data.ssh_auth is defined and data.ssh_auth.keys is defined %}
+{% if data.ssh_auth is defined and data.ssh_auth.ssh_keys is defined %}
 user_{{ user }}_ssh_auth:
   ssh_auth.manage:
     - user: {{ user }}
     - enc: {{ data.ssh_auth.enc | default ('ed25519') }}
-    - ssh_keys: {{ data.ssh_auth.keys }}
+    - ssh_keys: {{ data.ssh_auth.ssh_keys }}
     - require:
       - user: {{ user }}
-{% elif data.ssh_auth is defined and not data.ssh_auth.key is defined %}
+{% elif data.ssh_auth is defined and not data.ssh_auth.ssh_keys is defined %}
 user_{{ user }}_ssh_auth_file:
   ssh_auth.present:
     - user: {{ user }}

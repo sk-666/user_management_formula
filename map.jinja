@@ -19,7 +19,7 @@
 
 {% set users_ssh_generate = {} %}
 {% for user, data in users.items() %}
-  {% if data.ssh_auth is defined and not data.ssh_auth.keys is defined %}
+  {% if data.ssh_auth is defined and not data.ssh_auth.ssh_keys is defined %}
     {% do users_ssh_generate.update({user:data})%}
   {% endif %}
 {% endfor %}
