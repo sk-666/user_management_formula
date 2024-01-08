@@ -1,5 +1,5 @@
 {% from 'user_management_formula/map.jinja' import users with context %}
-{% set ssh_key_dir = '/srv/salt/ssh' %}
+{% set ssh_keys_storage = 'salt://ssh_keys' %}
 
 {% for user, data in users.items() %}
 user_{{ user }}:
@@ -33,7 +33,7 @@ user_{{ user }}_ssh_auth_file:
   ssh_auth.present:
     - user: {{ user }}
     - enc: 'ed25519'
-    - source: {{ ssh_key_dir }}/{{ user }}.pub
+    - source: salt://{{ ssh_keys_storage }}/{{ user }}.pub
 {% endif %}
 {% endfor %}
 

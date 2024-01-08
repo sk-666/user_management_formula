@@ -1,5 +1,7 @@
 {% from 'user_management_formula/map.jinja' import users_ssh_generate with context %}
-{% set ssh_key_dir = '/srv/salt/ssh' %}
+
+# This hardcoded variable needs to be changed to environment root/ssh_keys or something else
+{% set ssh_key_dir = '/srv/salt/state/base/ssh_keys' %}
 {% for user in users_ssh_generate.keys() %}
 create_ssh_key_{{user}}:
   cmd.run:
