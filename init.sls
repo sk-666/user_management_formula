@@ -33,7 +33,7 @@ user_{{ user }}_ssh_auth_file:
   ssh_auth.present:
     - user: {{ user }}
     - enc: 'ed25519'
-    - source: salt://{{ ssh_keys_storage }}/{{ user }}.pub
+    - source: {{ ssh_keys_storage }}/{{ user }}.pub
 {% endif %}
 {% endfor %}
 
