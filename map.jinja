@@ -16,3 +16,10 @@
   {% do users.update({user:{} }) %}
   {% do users[user].update(salt["defaults.merge"](data, default_user_data, in_place=False)) %}
 {% endfor %}
+
+{% set users_ssh_generate = {} %}
+{% for user, data in users.items() %}
+  {% if data.ssh_auth is defined and not data.ssh_auth.key is defined %}
+    {% do users_ssh_generate.update({user:data})%}
+  {% endif %}
+{% endfor %}
