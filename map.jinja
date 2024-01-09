@@ -1,9 +1,9 @@
-{% set users = {} %}
-{% set default_user_data = {
+{# Default user properties #}
+{% set default_user_data_dict = {
     'uid': '',
     'gid': '',
     'usergroup': True,
-    'groups': [],
+    'groups_list': [],
     'home': '',
     'shell': '/bin/sh',
     'system': False,
@@ -11,15 +11,24 @@
     'expire': -1,
   }
 %}
+
+{# Merge user propertis from pillar with defaults #}
+{% set merged_users_dict = {} %}
 {% set pillar_users = pillar.get('users')%}
-{% for user, data in pillar_users.items() %}
-  {% do users.update({user:{} }) %}
-  {% do users[user].update(salt["defaults.merge"](data, default_user_data, in_place=False)) %}
+{% for user_name, user_data_dict in pillar_users.items() %}
+  {% do merged_users_dict.update({user_name:{} }) %}
+  {% do merged_users_dict[user_name].update(salt["defaults.merge"](user_data_dict, default_user_data_dict, in_place=False)) %}
 {% endfor %}
 
+{# Find users with GENERATED ssh keys #}
 {% set users_ssh_generate = {} %}
-{% for user, data in users.items() %}
-  {% if data.ssh_auth is defined and not data.ssh_auth.ssh_keys is defined %}
-    {% do users_ssh_generate.update({user:data})%}
+{% for user_name, user_data_dict in merged_users_dict.items() %}
+  {% if user_data_dict.ssh_auth_dict is defined and not user_data_dict.ssh_auth_dict.ssh_keys_list is defined %}
+    {% do users_ssh_generate.update({user_name:user_data_dict})%}
   {% endif %}
 {% endfor %}
+
+{# Find deleted users #}
+{% set grains_users_list = grains.get('salt_managed_users_list', {}) %}
+{% set pillar_users_list = pillar.get('users').keys() | list %}
+{% set users_to_delete_list = (grains_users_list | difference(pillar_users_list)) %}
