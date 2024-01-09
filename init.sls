@@ -41,7 +41,7 @@ user_{{ user_name }}_ssh_auth_file:
 
 # Delete users which present in grains but absent in pillar
 {% from 'user_management_formula/map.jinja' import users_to_delete_list with context %}
-{% for user_name in users_delete %}
+{% for user_name in users_to_delete_list %}
 delete_user_{{ user_name }}:
   user.absent:
     - name: {{ user_name }}
