@@ -1,3 +1,8 @@
+{#
+  Manage Linux users. User data is taken from "users" pillar.
+  Managed user names kept in grain "salt_managed_users_list"
+#}
+
 {% from 'user_management_formula/map.jinja' import merged_users_dict as users with context %}
 {% set ssh_keys_storage = 'salt://ssh_keys' %}
 
