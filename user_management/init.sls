@@ -3,7 +3,7 @@
   Managed user names kept in grain "salt_managed_users_list"
 #}
 
-{% from 'user_management_formula/map.jinja' import merged_users_dict as users with context %}
+{% from tpldir ~ '/map.jinja' import merged_users_dict as users with context %}
 {% set ssh_keys_storage = 'salt://ssh_keys' %}
 
 {% for user_name, user_data_dict in users.items() %}
@@ -48,7 +48,7 @@ user_{{ user_name }}_ssh_auth_file:
 {% endfor %}
 
 {# Delete users which present in grains but absent in pillar #}
-{% from 'user_management_formula/map.jinja' import users_to_delete_list with context %}
+{% from tpldir ~ '/map.jinja' import users_to_delete_list with context %}
 {% for user_name in users_to_delete_list %}
 delete_user_{{ user_name }}:
   user.absent:
