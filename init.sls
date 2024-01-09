@@ -34,6 +34,8 @@ user_{{ user }}_ssh_auth_file:
     - user: {{ user }}
     - enc: 'ed25519'
     - source: {{ ssh_keys_storage }}/{{ user }}.pub
+    - require:
+      - user: {{ user }}
 {% endif %}
 {% endfor %}
 
