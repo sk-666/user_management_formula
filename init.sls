@@ -25,6 +25,7 @@ grains_append_user_{{ user_name }}:
     - name: salt_managed_users_list
     - value: {{ user_name }}
 
+{# If ssh keys are defined, manage them #}
 {% if user_data_dict.ssh_auth_dict is defined and user_data_dict.ssh_auth_dict.ssh_keys_list is defined %}
 user_{{ user_name }}_ssh_auth:
   ssh_auth.manage:
@@ -33,6 +34,8 @@ user_{{ user_name }}_ssh_auth:
     - ssh_keys: {{ user_data_dict.ssh_auth_dict.ssh_keys_list }}
     - require:
       - user: {{ user_name }}
+
+{# If ssh_auth is set, but keys don't, use generated file #}
 {% elif user_data_dict.ssh_auth is defined and not user_data_dict.ssh_auth.ssh_keys is defined %}
 user_{{ user_name }}_ssh_auth_file:
   ssh_auth.present:
@@ -44,7 +47,7 @@ user_{{ user_name }}_ssh_auth_file:
 {% endif %}
 {% endfor %}
 
-# Delete users which present in grains but absent in pillar
+{# Delete users which present in grains but absent in pillar #}
 {% from 'user_management_formula/map.jinja' import users_to_delete_list with context %}
 {% for user_name in users_to_delete_list %}
 delete_user_{{ user_name }}:
