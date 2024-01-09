@@ -1,4 +1,4 @@
-{% from 'user_management_formula/map.jinja' import users with context %}
+{% from 'user_management_formula/map.jinja' import merged_users_dict as users with context %}
 {% set ssh_keys_storage = 'salt://ssh_keys' %}
 
 {% for user_name, user_data_dict in users.items() %}
