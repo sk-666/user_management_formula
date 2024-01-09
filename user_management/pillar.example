@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+users:
+  # User with all main attributest defined
+  test:
+    fullname: "Test user"
+    shell: /bin/sh
+    home: /home/test
+    usergroup: True
+    groups_list: []
+    system: False
+    expire: 0
+    ssh_auth_dict:
+      # more the one SSH key may be added here
+      ssh_keys_list:
+        - 'AAAAC3NzaC1lZDIANTE5AAAAINi6GR0V+/NmR1v8KgablwwMXfVIpc0cdPrShpvrJvoH'
+  # User with only one attribute defined. SSH key will be generated for this user.
+  testadmin:
+    ssh_auth_dict:
