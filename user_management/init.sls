@@ -36,7 +36,7 @@ user_{{ user_name }}_ssh_auth:
       - user: {{ user_name }}
 
 {# If ssh_auth is set, but keys don't, use generated file #}
-{% elif user_data_dict.ssh_auth is defined and not user_data_dict.ssh_auth.ssh_keys is defined %}
+{% elif user_data_dict.ssh_auth_dict is defined and not user_data_dict.ssh_auth_dict.ssh_keys_list is defined %}
 user_{{ user_name }}_ssh_auth_file:
   ssh_auth.present:
     - user: {{ user_name }}
