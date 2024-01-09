@@ -1,34 +1,34 @@
 {% from 'user_management_formula/map.jinja' import users with context %}
 {% set ssh_keys_storage = 'salt://ssh_keys' %}
 
-{% for user_name, data in users.items() %}
+{% for user_name, user_data_dict in users.items() %}
 user_{{ user_name }}:
   user.present:
     - name: {{ user_name }}
-    - uid: {{ data.uid }}
-    - gid: {{ data.gid }}
-    - usergroup: {{ data.usergroup }}
-    - groups: {{ data.groups }}
-    - home: {{ data.home }}
-    - shell: {{ data.shell }}
-    - system: {{ data.system }}
-    - fullname: {{ data.fullname }}
-    - expire: {{ data.expire }}
+    - uid: {{ user_data_dict.uid }}
+    - gid: {{ user_data_dict.gid }}
+    - usergroup: {{ user_data_dict.usergroup }}
+    - groups: {{ user_data_dict.groups }}
+    - home: {{ user_data_dict.home }}
+    - shell: {{ user_data_dict.shell }}
+    - system: {{ user_data_dict.system }}
+    - fullname: {{ user_data_dict.fullname }}
+    - expire: {{ user_data_dict.expire }}
 
 grains_append_user_{{ user_name }}:
   grains.list_present:
     - name: salt_managed_users
     - value: {{ user_name }}
 
-{% if data.ssh_auth is defined and data.ssh_auth.ssh_keys is defined %}
+{% if user_data_dict.ssh_auth is defined and user_data_dict.ssh_auth.ssh_keys is defined %}
 user_{{ user_name }}_ssh_auth:
   ssh_auth.manage:
     - user: {{ user_name }}
-    - enc: {{ data.ssh_auth.enc | default ('ed25519') }}
-    - ssh_keys: {{ data.ssh_auth.ssh_keys }}
+    - enc: {{ user_data_dict.ssh_auth.enc | default ('ed25519') }}
+    - ssh_keys: {{ user_data_dict.ssh_auth.ssh_keys }}
     - require:
       - user: {{ user_name }}
-{% elif data.ssh_auth is defined and not data.ssh_auth.ssh_keys is defined %}
+{% elif user_data_dict.ssh_auth is defined and not user_data_dict.ssh_auth.ssh_keys is defined %}
 user_{{ user_name }}_ssh_auth_file:
   ssh_auth.present:
     - user: {{ user_name }}

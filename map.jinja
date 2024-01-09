@@ -1,5 +1,5 @@
-{% set users = {} %}
-{% set default_user_data = {
+{% set merged_users_dict = {} %}
+{% set default_user_data_dict = {
     'uid': '',
     'gid': '',
     'usergroup': True,
@@ -12,14 +12,14 @@
   }
 %}
 {% set pillar_users = pillar.get('users')%}
-{% for user_name, data in pillar_users.items() %}
-  {% do users.update({user_name:{} }) %}
-  {% do users[user_name].update(salt["defaults.merge"](data, default_user_data, in_place=False)) %}
+{% for user_name, user_data_dict in pillar_users.items() %}
+  {% do merged_users_dict.update({user_name:{} }) %}
+  {% do uerged_users_dict[user_name].update(salt["defaults.merge"](user_data_dict, default_user_data_dict, in_place=False)) %}
 {% endfor %}
 
 {% set users_ssh_generate = {} %}
-{% for user_name, data in users.items() %}
-  {% if data.ssh_auth is defined and not data.ssh_auth.ssh_keys is defined %}
-    {% do users_ssh_generate.update({user_name:data})%}
+{% for user_name, user_data_dict in users.items() %}
+  {% if user_data_dict.ssh_auth is defined and not user_data_dict.ssh_auth.ssh_keys is defined %}
+    {% do users_ssh_generate.update({user_name:user_data_dict})%}
   {% endif %}
 {% endfor %}
