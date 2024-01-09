@@ -8,7 +8,7 @@ user_{{ user_name }}:
     - uid: {{ user_data_dict.uid }}
     - gid: {{ user_data_dict.gid }}
     - usergroup: {{ user_data_dict.usergroup }}
-    - groups: {{ user_data_dict.groups }}
+    - groups: {{ user_data_dict.groups_list }}
     - home: {{ user_data_dict.home }}
     - shell: {{ user_data_dict.shell }}
     - system: {{ user_data_dict.system }}
@@ -20,12 +20,12 @@ grains_append_user_{{ user_name }}:
     - name: salt_managed_users
     - value: {{ user_name }}
 
-{% if user_data_dict.ssh_auth is defined and user_data_dict.ssh_auth.ssh_keys is defined %}
+{% if user_data_dict.ssh_auth_dict is defined and user_data_dict.ssh_auth_dict.ssh_keys_list is defined %}
 user_{{ user_name }}_ssh_auth:
   ssh_auth.manage:
     - user: {{ user_name }}
-    - enc: {{ user_data_dict.ssh_auth.enc | default ('ed25519') }}
-    - ssh_keys: {{ user_data_dict.ssh_auth.ssh_keys }}
+    - enc: {{ user_data_dict.ssh_auth_dict.enc | default ('ed25519') }}
+    - ssh_keys: {{ user_data_dict.ssh_auth_dict.ssh_keys_list }}
     - require:
       - user: {{ user_name }}
 {% elif user_data_dict.ssh_auth is defined and not user_data_dict.ssh_auth.ssh_keys is defined %}

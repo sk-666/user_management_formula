@@ -3,7 +3,7 @@
     'uid': '',
     'gid': '',
     'usergroup': True,
-    'groups': [],
+    'groups_list': [],
     'home': '',
     'shell': '/bin/sh',
     'system': False,
@@ -19,7 +19,7 @@
 
 {% set users_ssh_generate = {} %}
 {% for user_name, user_data_dict in merged_users_dict.items() %}
-  {% if user_data_dict.ssh_auth is defined and not user_data_dict.ssh_auth.ssh_keys is defined %}
+  {% if user_data_dict.ssh_auth_dict is defined and not user_data_dict.ssh_auth_dict.ssh_keys_list is defined %}
     {% do users_ssh_generate.update({user_name:user_data_dict})%}
   {% endif %}
 {% endfor %}
