@@ -14,7 +14,7 @@
 {% set pillar_users = pillar.get('users')%}
 {% for user_name, user_data_dict in pillar_users.items() %}
   {% do merged_users_dict.update({user_name:{} }) %}
-  {% do uerged_users_dict[user_name].update(salt["defaults.merge"](user_data_dict, default_user_data_dict, in_place=False)) %}
+  {% do merged_users_dict[user_name].update(salt["defaults.merge"](user_data_dict, default_user_data_dict, in_place=False)) %}
 {% endfor %}
 
 {% set users_ssh_generate = {} %}
