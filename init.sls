@@ -39,7 +39,7 @@ user_{{ user_name }}_ssh_auth_file:
 {% endif %}
 {% endfor %}
 
-{% from 'user_management_formula/map_deleted_users.jinja' import users_delete with context %}
+{% from 'user_management_formula/map.jinja' import users_delete with context %}
 {% for user_name in users_delete %}
 delete_user_{{ user_name }}:
   user.absent:
