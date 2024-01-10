@@ -1,0 +1,13 @@
+# Example of orchestrate sls. Orchestration is needed to create ssh keys on master before applying them to minions
+
+---
+generate_ssh_keys_on master:
+  salt.state:
+    - tgt: '*master'
+    - highstate: True
+apply_users_on_minions:
+  salt.state:
+    - tgt: '*minion'
+    - highstate: True
+    - require:
+      - generate_ssh_keys_on master
